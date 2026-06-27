@@ -1,0 +1,100 @@
+import { Locator, expect } from '@playwright/test';
+import { BasePage } from './BasePage';
+
+export class InvoicePage extends BasePage {
+
+    //Locators
+    get invoicesHeading(): Locator {
+        return this.page.getByRole('heading', { name: 'Invoices' });
+    }
+
+    get newInvoiceButton(): Locator {
+        return this.page.getByRole('button', { name: 'New Invoice' });
+    }
+
+    get clientNameField(): Locator {
+        return this.page.getByPlaceholder('Type client name or email...');
+    }
+
+    get clientAddressField(): Locator {
+        return this.page.getByPlaceholder('Enter client address...');
+    }
+
+    get addCourseButton(): Locator {
+        return this.page.getByRole('button', { name: 'Add Course' });
+    }
+
+    get courseDropdown(): Locator {
+    return this.page.locator('select').filter({ hasText: 'Select course' });
+}
+
+    get notesField(): Locator {
+        return this.page.getByPlaceholder('Additional notes...');
+    }
+
+    get dueDateField(): Locator {
+        return this.page.locator('input[type="date"]');
+    }
+
+    get paymentStatusDropdown(): Locator {
+        return this.page.getByRole('combobox');
+    }
+
+    get totalAmount(): Locator {
+        return this.page.locator('xpath=//span[contains(text(),"Total:")]/following-sibling::span');
+    }
+
+    get createInvoiceButton(): Locator {
+        return this.page.getByRole('button', { name: 'Create Invoice' });
+    }
+
+    // Methods
+    async verifyInvoicesPageIsDisplayed() {
+        await this.basePageVerifyElementIsVisible(this.invoicesHeading);
+    }
+
+    async clickNewInvoice() {
+        await this.basePageClickElement(this.newInvoiceButton);
+    }
+
+    async fillClientName(name: string) {
+        await this.basePageEnterText(this.clientNameField, name);
+    }
+
+    async fillClientAddress(address: string) {
+        await this.basePageEnterText(this.clientAddressField, address);
+    }
+
+    async addCoursesAndSelect(times: number) {
+    const courses = ['Testing Course', 'API Testing with Postman – Fundamentals']
+    for (let i = 0; i < times; i++) {
+        await this.basePageClickElement(this.addCourseButton);
+        const courseDropdowns = this.page.locator('select');
+        await courseDropdowns.nth(i).selectOption(courses[i % courses.length]);
+    }}
+
+    async fillNotes(description: string) {
+        await this.basePageEnterText(this.notesField, description);
+    }
+
+    async setDueDate(date: string) {
+        await this.basePageEnterText(this.dueDateField, date);
+    }
+
+    async setPaymentStatus(status: string) {
+        await this.paymentStatusDropdown.selectOption(status);
+    }
+
+    async validateTotal(expectedTotal: string) {
+        await expect(this.totalAmount).toContainText(expectedTotal);
+    }
+
+    async clickCreateInvoice() {
+        await this.basePageClickElement(this.createInvoiceButton);
+    }
+
+    async validateInvoiceCreated(clientName: string) {
+        await expect(this.page.getByText(clientName)).toBeVisible();
+    }
+
+}
