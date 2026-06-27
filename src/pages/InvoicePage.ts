@@ -104,7 +104,23 @@ export class InvoicePage extends BasePage {
     }
 
     async validateInvoiceCreated(clientName: string) {
-        await expect(this.page.getByText(clientName)).toBeVisible();
-    }
+    // Verify we're back on the invoices list
+    await this.basePageVerifyElementIsVisible(this.invoicesHeading);
+    
+    // Verify the client name appears in the invoice table
+    await expect(
+        this.page.locator('table').getByText(clientName)
+    ).toBeVisible();
+
+    // Verify status shows as Paid
+    await expect(
+        this.page.locator('table').getByText('Paid')
+    ).toBeVisible();
+
+    // Verify amount appears in table
+    await expect(
+        this.page.locator('table').getByText('2 760')
+    ).toBeVisible();
+}
 
 }
