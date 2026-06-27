@@ -18,7 +18,9 @@ export class AdminPage extends BasePage {
     }
 
     async navigateToInvoices() {
-    await this.basePageClickElement(this.invoicesLink);
+        await this.page.waitForLoadState('networkidle');
+        await this.basePageClickElement(this.invoicesLink);
+        await this.page.waitForLoadState('networkidle');
 }
 
 }

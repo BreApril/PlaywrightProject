@@ -11,6 +11,8 @@ export default defineConfig({
     baseURL: 'https://ndosisimplifiedautomation.vercel.app/',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    actionTimeout: 60000,
+    navigationTimeout: 60000,
   },
 
   projects: [

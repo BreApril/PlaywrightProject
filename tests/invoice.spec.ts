@@ -8,8 +8,8 @@ test('Create and validate invoice', async ({
     invoicePage 
 }) => {
     await loginPage.performFullLogin(
-    process.env.ADMIN_EMAIL || 'admin@gmail.com',
-    process.env.ADMIN_PASSWORD || '@12345678'
+            process.env.ADMIN_EMAIL || 'admin@gmail.com',
+            process.env.ADMIN_PASSWORD || '@12345678'
 );
     await homePage.verifyHomePageHeadingIsDisplayed();
     await homePage.navigateToAdminPage();
