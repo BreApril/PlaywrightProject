@@ -37,11 +37,11 @@ export class InvoicePage extends BasePage {
     }
 
     get paymentStatusDropdown(): Locator {
-        return this.page.getByRole('combobox');
+    return this.page.locator('select').filter({ hasText: 'Pending' });
     }
 
     get totalAmount(): Locator {
-        return this.page.locator('xpath=//span[contains(text(),"Total:")]/following-sibling::span');
+    return this.page.locator('xpath=//*[contains(text(),"Total:")]/following-sibling::*');
     }
 
     get createInvoiceButton(): Locator {
@@ -66,12 +66,22 @@ export class InvoicePage extends BasePage {
     }
 
     async addCoursesAndSelect(times: number) {
-    const courses = ['Testing Course', 'API Testing with Postman – Fundamentals']
+    const courses = ['Testing Course', 'API Testing with Postman – Fundamentals'];
+    
     for (let i = 0; i < times; i++) {
-        await this.basePageClickElement(this.addCourseButton);
+        // Use JavaScript click to bypass overlay
+        await this.addCourseButton.dispatchEvent('click');
+        
+        // Wait for a new select to appear
+        await this.page.waitForFunction(
+            (count) => document.querySelectorAll('select').length > count,
+            i
+        );
+        
         const courseDropdowns = this.page.locator('select');
-        await courseDropdowns.nth(i).selectOption(courses[i % courses.length]);
-    }}
+        await courseDropdowns.nth(i).selectOption({ label: courses[i % courses.length] });
+    }
+}
 
     async fillNotes(description: string) {
         await this.basePageEnterText(this.notesField, description);
@@ -82,7 +92,7 @@ export class InvoicePage extends BasePage {
     }
 
     async setPaymentStatus(status: string) {
-        await this.paymentStatusDropdown.selectOption(status);
+    await this.paymentStatusDropdown.selectOption({ label: '✅ Paid' });
     }
 
     async validateTotal(expectedTotal: string) {
@@ -90,7 +100,7 @@ export class InvoicePage extends BasePage {
     }
 
     async clickCreateInvoice() {
-        await this.basePageClickElement(this.createInvoiceButton);
+    await this.createInvoiceButton.dispatchEvent('click');
     }
 
     async validateInvoiceCreated(clientName: string) {

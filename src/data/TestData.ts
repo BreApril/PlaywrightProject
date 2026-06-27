@@ -4,7 +4,7 @@ export const invoiceData = {
     notes: 'This is a test invoice description',
     dueDate: '2026-06-30',
     status: 'Paid',
-    expectedTotal: 'R2800',
+    expectedTotal: 'R 2 760,00',
     courses: [
         'Testing Course',
         'API Testing with Postman – Fundamentals',

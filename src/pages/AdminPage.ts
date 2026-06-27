@@ -9,8 +9,8 @@ export class AdminPage extends BasePage {
     }
 
     get invoicesLink(): Locator {
-        return this.page.getByRole('link', { name: 'Invoices' });
-    }
+        return this.page.getByRole('button', { name: 'Invoices' });
+}
 
      // Methods
     async verifyAdminPageIsDisplayed() {
@@ -18,7 +18,7 @@ export class AdminPage extends BasePage {
     }
 
     async navigateToInvoices() {
-        await this.basePageClickElement(this.invoicesLink);
-    }
+    await this.basePageClickElement(this.invoicesLink);
+}
 
 }

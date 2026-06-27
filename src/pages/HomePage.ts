@@ -16,7 +16,7 @@ export class HomePage extends BasePage {
     await this.basePageClickElement(
         this.page.locator('xpath=//button/span[text() = "Menu"]'));
     await this.basePageClickElement(
-        this.page.locator('xpath=//span[contains(.,"Admin Panel")]'));
+        this.page.locator('xpath=//span[contains(.,"Admin Panel")]').first());
 }
         
 }
